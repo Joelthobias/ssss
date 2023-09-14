@@ -1,5 +1,23 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
 input{
     border: none !important;
     border-bottom: solid 1px black !important;
     outline: none !important;
 }
+nav{
+    height: 80px;
+}
+a{
+    text-decoration: none;
+    color: #000;
+}
+a:hover{
+    text-decoration: underline;
+}
+.msg{
+    color: red;
+    text-align: center;
+    animation: shakeX;
+    animation-duration: 2s;
+}
+
