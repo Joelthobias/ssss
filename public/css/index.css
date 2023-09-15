@@ -1,23 +1,77 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
-input{
+
+body,
+html {
+    height: 100%;
+}
+
+input {
     border: none !important;
     border-bottom: solid 1px black !important;
     outline: none !important;
 }
-nav{
+
+nav {
     height: 80px;
 }
-a{
+.bg-custom{
+    background: #1111119e;
+    color: #fff;
+}
+a {
     text-decoration: none;
     color: #000;
 }
-a:hover{
+
+a:hover {
     text-decoration: underline;
 }
-.msg{
+
+.msg {
     color: red;
     text-align: center;
     animation: shakeX;
     animation-duration: 2s;
 }
 
+.parallax {
+    /* The image used */
+    background-image: url("../images/bg.jpg");
+
+    /* Set a specific height */
+    min-height: 100%;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    opacity: 0.65;
+}
+.caption {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    color: #000;
+}
+.caption-1{
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    color: #000;
+}
+.border {
+    background-color: #111;
+    color: #fff;
+    padding: 23px;
+    font-size: 25px;
+    letter-spacing: 10px;
+}
+.border>a{
+    color: #eabb9c;
+}

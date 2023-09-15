@@ -15,8 +15,12 @@ app.use(cookieParser())
 app.use(express.urlencoded({extended:true}))
 
 app.use(express.urlencoded({extended:true}))
-const indexRouter=require('./routes/index')
-app.use('/',indexRouter)
+
+const userRouter=require('./routes/user')
+const adminRouter = require('./routes/admin')
+
+app.use('/', userRouter)
+app.use('/admin', adminRouter)
 // Start the server
 const connect = db.connect((err) => {
   if (!err){

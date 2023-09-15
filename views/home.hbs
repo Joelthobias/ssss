@@ -1,0 +1,11 @@
+<div class="parallax">
+   {{#if user}}
+      <div class="caption">  
+         <span class="border">Welcome {{user.name}}</span>
+      </div>
+      {{else}}
+      <div class="caption-1">
+         <span class="border">Welcome <br> <br> &nbsp;<a href="/login">  <big>login</big></a> for more</span>
+      </div>
+      {{/if}}
+</div>
