@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const db = require('../connection')
+const db = require('../connection');
+const { log } = require('handlebars');
+const objectId = require('mongodb').ObjectId
 
 exports.isLoggedIn = async (req, res,next) => {
   console.log(req.cookies.user);
@@ -62,6 +64,13 @@ exports.login = async (req, res) => {
     let msg = "User Already Exits"
     res.redirect(`../?msg=${msg}`)
   }
+}
+exports.editUser=async(req,res)=>{
+  let id=req.params.id
+  const userCollection = db.get().collection('user');
+  let user = await userCollection.findOne({ '_id':objectId('6503410143125845359227b5')})
+  console.log(user);
+  res.send(user)
 }
 
 exports.logout=(req,res)=>{

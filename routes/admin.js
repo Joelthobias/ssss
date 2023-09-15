@@ -15,6 +15,7 @@ router.get('/login', (req, res) => {
     console.log(msg);
     res.render('admin/login',{msg})
 })
+router.get('/editUser/:id',userController.editUser)
 
 router.get('/logout', adminController.logout)
 router.post('/login', adminController.admin_login)
