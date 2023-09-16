@@ -1,3 +1,4 @@
+const { google } = require('googleapis');
 const express = require('express');
 const router = express.Router();
 const userController = require('../controller/userController')
@@ -8,16 +9,17 @@ router.get('/login', (req, res) => {
   res.render('login',{msg})
 })
 router.get('/signup', (req, res) => {
+
+
   msg = req.query.msg
   console.log(msg);
-  res.render('signup')
+  res.render('signup',{msg})
 })
 router.get('/', (req, res) => {
   res.render('home')
 })
-router.get('/googleAuth',(req,res)=>{
-    res.send('hello')
-})
+router.post('/signinWithGoogle',userController.gAuth)
+router.post('/loginWithGoogle',userController.gLogin)
 
 router.get('/profile',userController.isLoggedIn,userController.findProfile)
 router.get('/logout',userController.logout)

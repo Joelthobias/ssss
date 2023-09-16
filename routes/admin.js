@@ -4,7 +4,10 @@ const userController = require('../controller/userController')
 const adminController = require('../controller/adminController');
 const { log } = require('handlebars/runtime');
 
-router.get('/',adminController.isLoggedIn, async(req, res) => {
+router.post('/login', adminController.admin_login)
+
+router.use(adminController.isLoggedIn)
+router.get('/', async(req, res) => {
     let users=await userController.findAllUsers()
     let admin=true
     res.render('admin/dashboard',{users,admin})
@@ -18,7 +21,6 @@ router.get('/login', (req, res) => {
 router.get('/editUser/:id',userController.editUser)
 
 router.get('/logout', adminController.logout)
-router.post('/login', adminController.admin_login)
 
 module.exports = router;
 
