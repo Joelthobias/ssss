@@ -152,3 +152,22 @@ exports.logout = (req, res) => {
   res.redirect('..')
 
 }
+
+exports.updateUser = (req, res) => {
+  res.json(req.body)
+}
+exports.deleteUser =async (req, res) => {
+  let id = req.params.id
+  id = new ObjectId(id)
+  const userCollection = db.get().collection('user');
+  try{
+    let deletedUser=await userCollection.deleteOne({'_id':id})
+    // console.log();
+    if (deletedUser.acknowledged){
+      let msg="Sucessfully Deleted "
+      res.redirect(`/admin?msg=${msg}`)
+    }
+  }catch(error){
+    res.json(error)
+  }
+}

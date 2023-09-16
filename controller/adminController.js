@@ -14,7 +14,6 @@ exports.admin_login = async (req, res) => {
     }
 }
 exports.isLoggedIn = async (req, res,next) => {
-    console.log(req.cookies);
   if (!req.cookies.admin) { // Handle the case where there is no authenticated user
     res.redirect('/admin/login') // Redirect to the login page, for example
   } else {
