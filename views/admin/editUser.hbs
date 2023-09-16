@@ -1,0 +1,15 @@
+<form class="col-6 m-5" method="POST" action="/editUser">
+
+    <div class="mt-4">
+        <label for="">Name : </label>
+        <input type="text" name="name" class="form-control" value="{{user.name}}" >
+    </div>
+    <div class="mt-4 d-flex ">
+        <label for="email" class="col-form-label">Email : </label>
+        <input name="email" type="email" class="form-control" value="{{user.email}}"  >
+    </div>
+    <div class="text-end">
+
+        <button type="submit" class="mt-5 btn btn-secondary">Update</button>
+    </div>
+</form>

@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const db = require('../connection');
 const { log } = require('handlebars');
-const objectId = require('mongodb').ObjectId
+const { ObjectId } = require('mongodb');
 
 exports.isLoggedIn = async (req, res,next) => {
   console.log(req.cookies.user);
@@ -61,16 +61,22 @@ exports.login = async (req, res) => {
   if (user) {
     res.cookie('user', user).redirect('/profile')
   }else{
-    let msg = "User Already Exits"
-    res.redirect(`../?msg=${msg}`)
+    let msg = "Invalid Creditnals"
+    res.redirect(`login/?msg=${msg}`)
   }
 }
 exports.editUser=async(req,res)=>{
   let id=req.params.id
+  id = new ObjectId(id)
   const userCollection = db.get().collection('user');
-  let user = await userCollection.findOne({ '_id':objectId('6503410143125845359227b5')})
-  console.log(user);
-  res.send(user)
+  try {
+    let user = await userCollection.find({'_id':id}).toArray();
+    user=user[0]
+    res.render('admin/editUser',{user})
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 }
 
 exports.logout=(req,res)=>{

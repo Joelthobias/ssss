@@ -5,7 +5,7 @@ const userController = require('../controller/userController')
 router.get('/login', (req, res) => {
   msg = req.query.msg
   console.log(msg);
-  res.render('login')
+  res.render('login',{msg})
 })
 router.get('/signup', (req, res) => {
   msg = req.query.msg
@@ -14,6 +14,9 @@ router.get('/signup', (req, res) => {
 })
 router.get('/', (req, res) => {
   res.render('home')
+})
+router.get('/googleAuth',(req,res)=>{
+    res.send('hello')
 })
 
 router.get('/profile',userController.isLoggedIn,userController.findProfile)

@@ -12,9 +12,13 @@ html {
 }
 
 input {
-    border: none !important;
-    border-bottom: solid 1px black !important;
+    border: solid 1px black !important;
     outline: none !important;
+    line-height: 1rem !important;
+    padding: .5rem !important;
+}
+.form-control:focus{
+    box-shadow: none !important;
 }
 
 nav {
@@ -72,7 +76,7 @@ a {
 .border {
     background-color: #111;
     color: #fff;
-    padding: 23px;
+    padding: 18px;
     font-size: 25px;
     letter-spacing: 10px;
 }
