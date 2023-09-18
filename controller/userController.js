@@ -153,8 +153,27 @@ exports.logout = (req, res) => {
 
 }
 
-exports.updateUser = (req, res) => {
-  res.json(req.body)
+exports.updateUser = async (req, res) => {
+  let data=req.body
+  let id = req.params.id
+  id = new ObjectId(id)
+  const userCollection = db.get().collection('user');
+  try{
+
+    let upadtedUser=await userCollection.updateOne({'_id':id},{
+      $set:{
+        "name":data.name,
+        "email":data.email
+      }
+    })
+    if (upadtedUser.acknowledged){
+      let msg = "Sucessfully Updated "
+      res.redirect(`/admin?msg=${msg}`)
+    }
+    
+  }catch(e){
+    console.log(e);
+  }
 }
 exports.deleteUser =async (req, res) => {
   let id = req.params.id
