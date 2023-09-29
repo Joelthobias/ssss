@@ -4,6 +4,7 @@ const db = require('../connection');
 const { log } = require('handlebars');
 const { ObjectId } = require('mongodb');
 const axios = require('axios')
+
 exports.isLoggedIn = async (req, res, next) => {
   console.log(req.cookies.user);
   if (!req.cookies.user) { // Handle the case where there is no authenticated user

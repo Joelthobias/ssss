@@ -1,44 +1,104 @@
-<div class="container mt-5">
-    <h3>Create account</h3>
-    <form class="col-4" method="POST" action="/signup">
-        {{#if msg}}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Add your CSS and other headers here -->
+    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+    <!-- Add other external scripts and stylesheets here -->
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h3>Create account</h3>
+        <form class="col-4" method="POST" action="/signup">
+            {{#if msg}}
             <p class="msg">{{msg}}</p>
-        {{/if}}
-        <div class="mt-4 form-floating ">
-            <input type="text" name="name" class="form-control" placeholder="Your Name">
-            <label for="floatingInput">Your Name</label>
+            {{/if}}
+            <div class="mt-4 form-floating ">
+                <input type="text" name="name" class="form-control" placeholder="Your Name">
+                <label for="floatingInput">Your Name</label>
+            </div>
+            <div class="mt-4 form-floating  ">
+                <input name="email" type="email" class="form-control" placeholder="Your Email">
+                <label for="floatingInput">Your Email</label>
+            </div>
+            <div class="mt-4 form-floating  mb-5">
+                <input name="password" type="password" class="form-control" placeholder="Password">
+                <label for="floatingInput">Password</label>
+            </div>
+            <div class="text-end">
+                <button type="submit" class="btn btn-secondary">SignUp</button>
+            </div>
+        </form>
+        <div id="firebaseui-auth-container"></div>
+        <div id="loader">Loading...</div>
+        <div id="g_id_onload" data-client_id="918399653782-ngd0km4fnqskg4ir8dusruml23itujr9.apps.googleusercontent.com"
+            data-context="signup" data-ux_mode="popup" data-login_uri="http://localhost:7081/signinWithGoogle"
+            data-nonce="" data-auto_prompt="false">
         </div>
-        <div class="mt-4 form-floating  ">
-            <input name="email" type="email" class="form-control" placeholder="Your Email">
-            <label for="floatingInput">Your Email</label>
-        </div>
-        <div class="mt-4 form-floating  mb-5">
 
-            <input name="password" type="password" class="form-control" placeholder="Password">
-            <label for="floatingInput">Password </label>
+        <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="filled_black"
+            data-text="signin_with" data-size="large" data-logo_alignment="left">
         </div>
-        <div class="text-end">
-
-            <button type="submit" class="btn btn-secondary">SignUp</button>
-        </div>
-    </form>
-    
-    <div id="g_id_onload"
-        data-client_id="918399653782-ngd0km4fnqskg4ir8dusruml23itujr9.apps.googleusercontent.com"
-        data-context="signup"
-        data-ux_mode="popup"
-        data-login_uri="http://localhost:7081/signinWithGoogle"
-        data-nonce=""
-        data-auto_prompt="false">
     </div>
 
-    <div class="g_id_signin"
-        data-type="standard"
-        data-shape="rectangular"
-        data-theme="filled_black"
-        data-text="signin_with"
-        data-size="large"
-        data-logo_alignment="left">
-    </div>
-</div>
-<script src="https://accounts.google.com/gsi/client" async></script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <div id="fb-root"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script>
+        import firebase form 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
+        import firebaseui form 'https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js';
+        // Initialize Firebase with your configuration
+        const firebaseConfig = {
+            apiKey: 'AIzaSyDZ7b_XfKetC3C53dx0QASIXEYvsNqVzG8',
+            authDomain: 'https:localhost:7081',
+            projectId: 'week52023',
+            appId: '1494515538001503'
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        var ui = new firebaseui.getAuth.AuthUI(firebase.auth());
+
+        var uiConfig = {
+            callbacks: {
+                signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+                    // User successfully signed in.
+                    // Return type determines whether we continue the redirect automatically
+                    // or whether we leave that to the developer to handle.
+                    return true;
+                },
+                uiShown: function () {
+                    // The widget is rendered.
+                    // Hide the loader.
+                    document.getElementById('loader').style.display = 'none';
+                }
+            },
+            // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+            signInFlow: 'popup',
+            signInSuccessUrl: 'http://localhost:7081/auth/facebook', // You need to provide a full URL
+            signInOptions: [
+                {
+                    provider: firebase.auth.FacebookAuthProvider.week52023,
+                    scopes: [
+                        'public_profile',
+                        'email'
+                    ],
+                    customParameters: {
+                        // Forces password re-entry.
+                        auth_type: 'reauthenticate'
+                    }
+                }
+            ]
+        };
+        ui.start('#firebaseui-auth-container', uiConfig);
+
+        // Your Firebase Authentication related code
+        // ...
+    </script>
+</body>
+
+</html>
