@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const db = require('../connection')
+const db = require('../connection.js')
 
 exports.isLoggedIn = async (req, res,next) => {
   if (!req.cookies.user) { // Handle the case where there is no authenticated user

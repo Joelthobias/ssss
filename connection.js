@@ -1,11 +1,11 @@
-const { MongoClient } = require('mongodb');
+import { MongoClient } from 'mongodb';
 
 const state = {
-	db: null,
+  db: null,
 };
 
 // const url = 'mongodb://localhost:27017';
-const url = 'mongodb+srv://joel:123@cluster0.chsu5.mongodb.net/week3'
+const url = 'mongodb+srv://joel:123@cluster0.chsu5.mongodb.net/week3';
 const dbname = 'week3';
 
 const connect = async () => {
@@ -20,7 +20,7 @@ const connect = async () => {
   }
 };
 
-module.exports = {
+export default {
   connect,
   get: () => state.db,
 };

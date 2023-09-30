@@ -1,0 +1,48 @@
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDZ7b_XfKetC3C53dx0QASIXEYvsNqVzG8",
+        authDomain: "week52023.firebaseapp.com",
+        projectId: "week52023",
+        storageBucket: "week52023.appspot.com",
+        messagingSenderId: "722903350049",
+        appId: "1:722903350049:web:77d8a8a0dbda8f394c9c60"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    import {
+            signInWithPhoneNumber,
+            RecaptchaVerifier,getAuth
+        } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-auth.js";
+
+
+    const auth = getAuth(app);
+    auth.languageCode='en';
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {});
+    const appVerifier = window.recaptchaVerifier;
+        let phoneNumber='+919633428835'
+        signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+                .then((confirmationResult) => {
+                    // SMS sent. Prompt user to type the code from the message, then sign the
+                    // user in with confirmationResult.confirm(code).
+                    window.confirmationResult = confirmationResult;
+                    console.log(confirmationResult)
+                    // ...
+                }).catch((error) => {
+                    window.recaptchaVerifier.render().then(function (widgetId) {
+                        grecaptcha.reset(widgetId);
+                    });
+                    // Error; SMS not sent
+                    // ...
+                    //grecaptcha.reset(window.recaptchaWidgetId);
+                });
+    
+</script>
+<button id="sign-in-button">Sigin</button>
+<div id="recaptcha-container"></div>

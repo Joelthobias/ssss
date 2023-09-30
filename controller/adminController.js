@@ -1,8 +1,7 @@
-const express = require('express')
-const router = express.Router()
-const db = require('../connection') 
+import express from 'express';
+import db from '../connection.js';
 
-exports.admin_login = async (req, res) => {
+const admin_login = async (req, res) => {
     const userData = req.body
     const userCollection = db.get().collection('admin');
     const admin = await userCollection.findOne({ 'email': userData.email })
@@ -13,7 +12,7 @@ exports.admin_login = async (req, res) => {
         res.redirect(`/admin/login?msg=${msg}`)
     }
 }
-exports.isLoggedIn = async (req, res,next) => {
+const isLoggedIn = async (req, res,next) => {
   if (!req.cookies.admin) { // Handle the case where there is no authenticated user
     res.redirect('/admin/login') // Redirect to the login page, for example
   } else {
@@ -21,8 +20,9 @@ exports.isLoggedIn = async (req, res,next) => {
     next()
   }
 }
-exports.logout = (req, res) => {
+const logout = (req, res) => {
     res.clearCookie('admin')
     res.redirect('/admin/login')
 
 }
+export default {admin_login,isLoggedIn,logout}

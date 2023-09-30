@@ -1,46 +1,62 @@
-const { google } = require('googleapis');
-const express = require('express');
-const router = express.Router();
-const userController = require('../controller/userController')
-const queryString = require('querystring');
-const { default: axios } = require('axios');
-const otpController = require('../controller/otpController');
+import express from 'express';
+import queryString from 'querystring';
+import axios from 'axios';
+import { sendOTP, verifyOTP } from '../controller/otpController.js';
+import {
+  isLoggedIn,
+  findProfile,
+  findAllUsers,
+  signup,
+  login,
+  editUser,
+  gLogin,
+  gAuth,
+  save,
+  logout,
+  updateUser,
+  deleteUser,
+} from '../controller/userController.js';
+const userRouter = express.Router();
 
-const authController = require('../controller/authController');
-
-// router.post('/signup', authController.signup);
-// send otp : send email by post method to host/send-otp
-router.post('/send-otp', otpController.sendOTP);
-// verify otp : verify email and otp by post method to host/verify-otp
-router.post('/verify-otp', otpController.verifyOTP);
-
-router.get('/login', (req, res) => {
-  msg = req.query.msg
-  console.log(msg);
-  res.render('login', { msg })
+userRouter.get('/help',(req,res)=>{
+  res.render('otp')
 })
 
-router.get('/signup', (req, res) => {
-  let stringifiedParams = {
+// send otp: send email by post method to host/send-otp
+userRouter.post('/send-otp', sendOTP);
+
+// verify otp: verify email and otp by post method to host/verify-otp
+userRouter.post('/verify-otp', verifyOTP);
+
+userRouter.get('/login', (req, res) => {
+  const msg = req.query.msg;
+  console.log(msg);
+  res.render('login', { msg });
+});
+
+userRouter.get('/signup', (req, res) => {
+  const stringifiedParams = {
     client_id: process.env.FBAPPID,
     redirect_uri: 'http://localhost:7081/auth/facebook',
-    scope: ['email', 'user_friends'].join(','), // comma seperated string
+    scope: ['email', 'user_friends'].join(','), // comma-separated string
     response_type: 'code',
     auth_type: 'rerequest',
     display: 'popup',
-  }
-  msg = req.query.msg
+  };
+  const msg = req.query.msg;
   console.log(msg);
-  res.render('signup', { msg })
-})
-router.get('/', (req, res) => {
-  res.render('home')
-})
-router.post('/signinWithGoogle', userController.gAuth)
-router.post('/loginWithGoogle', userController.gLogin)
+  res.render('signup', { msg });
+});
 
-router.post('/auth/facebook', async(req, res) => {
-  const { accessToken } = "1494515538001503|_trDVwseInRIbYUSvOqT32GiJmc"
+userRouter.get('/', (req, res) => {
+  res.render('home');
+});
+
+userRouter.post('/signinWithGoogle', gAuth);
+userRouter.post('/loginWithGoogle', gLogin);
+
+userRouter.post('/auth/facebook', async (req, res) => {
+  const { accessToken } = "1494515538001503|_trDVwseInRIbYUSvOqT32GiJmc";
 
   try {
     // Verify the Facebook access token
@@ -56,10 +72,11 @@ router.post('/auth/facebook', async(req, res) => {
     console.error('Facebook authentication error:', error.message);
     res.status(401).json({ error: 'Authentication failed' });
   }
-})
-router.get('/profile', userController.isLoggedIn, userController.findProfile)
-router.get('/logout', userController.logout)
-// router.post('/signup', userController.signup);
-router.post('/login', userController.login)
+});
 
-module.exports = router;
+userRouter.get('/profile', isLoggedIn, findProfile);
+userRouter.get('/logout', logout);
+userRouter.post('/signup', signup);
+userRouter.post('/login', login);
+
+export default userRouter;

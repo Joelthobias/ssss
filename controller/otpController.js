@@ -1,12 +1,12 @@
-const otpGenerator = require('otp-generator');
-const OTP = require('../models/otpModel');
-const db = require('../connection')
+import otpGenerator from 'otp-generator';
+import OTP from '../models/otpModel.js';
+import db from '../connection.js';
 
-exports.verifyOTP = async (req, res) => {
+export const verifyOTP = async (req, res) => {
   try {
     const { email, otp } = req.body;
     // Check if all details are provided
-    if ( !email || !otp) {
+    if (!email || !otp) {
       return res.status(403).json({
         success: false,
         message: 'email and otp are required',
@@ -23,31 +23,30 @@ exports.verifyOTP = async (req, res) => {
           message: 'The OTP is not valid',
         });
       }
-
     } else {
       return res.status(400).json({
         success: false,
         message: 'Invalid Email',
       });
-
     }
     // Secure password
-    
+
     return res.status(201).json({
       success: true,
-      message: 'OTP VERIFIED'
+      message: 'OTP VERIFIED',
     });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ success: false, error: error.message });
   }
 };
-exports.sendOTP = async (req, res) => {
+
+export const sendOTP = async (req, res) => {
   try {
     const { email } = req.body;
     // Check if user is already present
     const checkUserPresent = await db.get().collection('user').findOne({ email });
-    // If user found with provided email
+    // If a user is found with the provided email
     if (checkUserPresent) {
       console.log(checkUserPresent);
       return res.status(401).json({
@@ -68,17 +67,16 @@ exports.sendOTP = async (req, res) => {
       result = await db.get().collection('otp').findOne({ otp: otp });
     }
     const otpPayload = { email, otp };
-    let sendOTPres=await OTP.sendVerificationEmail(email,otp)
-    if (sendOTPres){
-
+    let sendOTPres = await OTP.sendVerificationEmail(email, otp);
+    if (sendOTPres) {
       const otpBody = await db.get().collection('otp').insertOne(otpPayload);
       res.status(200).json({
         success: true,
         message: 'OTP sent successfully',
         otp,
       });
-    }else{
-      throw('failed to send email')
+    } else {
+      throw ('failed to send email');
     }
   } catch (error) {
     console.log(error.message);

@@ -1,34 +1,43 @@
-const express = require('express');
-const router = express.Router();
-const userController = require('../controller/userController')
-const adminController = require('../controller/adminController');
-const { log } = require('handlebars/runtime');
+import express from 'express';
+import adminController from '../controller/adminController.js';
+import {
+    isLoggedIn,
+    findProfile,
+    findAllUsers,
+    signup,
+    login,
+    editUser,
+    gLogin,
+    gAuth,
+    save,
+    logout,
+    updateUser,
+    deleteUser,
+} from '../controller/userController.js';
+const adminRouter = express.Router();
 
-router.post('/login', adminController.admin_login)
-router.get('/login', (req, res) => {
-    let msg=undefined
-    msg=req.query.msg
+adminRouter.post('/login', adminController.admin_login);
+
+adminRouter.get('/login', (req, res) => {
+    let msg = req.query.msg;
     console.log(msg);
-    res.render('admin/login',{msg})
-})
+    res.render('admin/login', { msg });
+});
 
-router.use(adminController.isLoggedIn)
-router.get('/', async(req, res) => {
-    let users=await userController.findAllUsers()
-    let admin=true 
-    let msg=""
-    msg = req.query.msg
-    res.render('admin/dashboard',{users,admin,msg})
-})
+adminRouter.use(adminController.isLoggedIn);
 
-router.get('/logout', adminController.logout)
+adminRouter.get('/', async (req, res) => {
+    let users = await findAllUsers();
+    let admin = true;
+    let msg = "";
+    msg = req.query.msg;
+    res.render('admin/dashboard', { users, admin, msg });
+});
 
-router.get('/edit/:id',userController.editUser)
-router.post('/edit/:id', userController.updateUser)
-router.get('/delete/:id', userController.deleteUser)
-module.exports = router;
+adminRouter.get('/logout', adminController.logout);
 
+adminRouter.get('/edit/:id', editUser);
+adminRouter.post('/edit/:id', updateUser);
+adminRouter.get('/delete/:id', deleteUser);
 
-// router.get('/signup', (req, res) => {
-//     res.render('signup')
-// })
+export default adminRouter;

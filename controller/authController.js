@@ -1,7 +1,8 @@
-const bcrypt = require('bcrypt');
-const OTP = require('../models/otpModel');
-const db = require('../connection')
-exports.signup = async (req, res) => {
+import bcrypt from 'bcrypt';
+import OTP from '../models/otpModel.js';
+import db from '../connection.js';
+
+export const signup = async (req, res) => {
     try {
         const { name, email, password, role, otp } = req.body;
         // Check if all details are provided
@@ -12,8 +13,7 @@ exports.signup = async (req, res) => {
             });
         }
         // Check if user already exists
-        let existingUser =undefined
-        existingUser= await db.get().collection('user').find({ email }).toArray();
+        let existingUser = await db.get().collection('user').find({ email }).toArray();
         if (existingUser.email) {
             console.log(existingUser);
             return res.status(400).json({
@@ -24,20 +24,18 @@ exports.signup = async (req, res) => {
         // Find the most recent OTP for the email
         const response = await db.get().collection('otp').find({ email }).toArray();
         console.log(response);
-        if(response[0].email){
+        if (response[0].email) {
             if (response.length === 0 || otp !== response[0].otp) {
                 return res.status(400).json({
                     success: false,
                     message: 'The OTP is not valid',
                 });
             }
-
-        }else{
+        } else {
             return res.status(400).json({
                 success: false,
                 message: 'Invalid Email',
             });
-
         }
         // Secure password
         let hashedPassword;
@@ -54,7 +52,7 @@ exports.signup = async (req, res) => {
             email,
             password: hashedPassword,
             role,
-        }
+        };
         const newUser = await db.get().collection('user').insertOne(userJson);
         return res.status(201).json({
             success: true,
