@@ -4,9 +4,14 @@ import path from 'path';
 import hbs from 'express-handlebars';
 import db from './connection.js';
 import cookieParser from 'cookie-parser';
+import cors from 'cors'
+
+
 
 const port = 7081;
 const app = express();
+
+app.use(cors())
 
 // Set up Handlebars as the template engine
 app.set('view engine', 'hbs');
@@ -18,10 +23,13 @@ app.use(express.urlencoded({ extended: true }));
 
 import userRouter from './routes/user.js';
 import adminRouter from './routes/admin.js';
+import apiRouter from './routes/api.js';
 
 
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
+
+app.use('/api/v1', apiRouter)
 
 // Start the server using http module
 const server = http.createServer(app);
