@@ -12,6 +12,7 @@ apiRouter.get('/',(req,res)=>{
 apiRouter.post('/user/login',async(req,res)=>{
     const userData = req.body;
     const userCollection = db.get().collection('user');
+    
     const user = await userCollection.findOne({ 'email': userData.email },{'password':userData.password});
     if (user) {
         res.status(200).cookie('user', user).json({
