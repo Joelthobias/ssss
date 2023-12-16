@@ -11,7 +11,7 @@ import cors from 'cors'
 const port = 7081;
 const app = express();
 
-app.use(cors())
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 // Set up Handlebars as the template engine
 app.set('view engine', 'hbs');
