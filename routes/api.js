@@ -3,10 +3,14 @@ import db from '../connection.js';
 
 const apiRouter = express.Router();
 apiRouter.get('/',(req,res)=>{
-    res.json({
-        msg:"hello",
-        user:"JOEL"
-    })
+    console.log(req.cookies.user);
+    if(req.cookies.user){
+
+        res.json({
+            msg:"Sucess",
+            user:req.cookies.user.name
+        })
+    }
 })
 
 apiRouter.post('/user/login',async(req,res)=>{
@@ -14,10 +18,11 @@ apiRouter.post('/user/login',async(req,res)=>{
     const userCollection = db.get().collection('user');
     
     const user = await userCollection.findOne({ 'email': userData.email },{'password':userData.password});
+    console.log(user);
     if (user) {
-        res.status(200).cookie('user', user).json({
+        res.status(200).cookie('user', user,{expires:new Date(Date.now()+9000000)}).json({
             status:'Sucess',
-            user:req.body
+            user:user
         });
     } else {
         let msg = "Invalid Credentials";
@@ -27,5 +32,11 @@ apiRouter.post('/user/login',async(req,res)=>{
         })
     }
 })
-
+apiRouter.get('/user/logout', (req, res) => {
+    res.clearCookie('user');
+    res.status(200).json({
+        msg:'done'
+    })
+    console.log('logout');
+})
 export default apiRouter;
