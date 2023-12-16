@@ -2,6 +2,7 @@ import express from 'express';
 import db from '../connection.js';
 
 const apiRouter = express.Router();
+<<<<<<< HEAD
 apiRouter.get('/',(req,res)=>{
     console.log(req.cookies.user);
     if(req.cookies.user){
@@ -11,12 +12,21 @@ apiRouter.get('/',(req,res)=>{
             user:req.cookies.user.name
         })
     }
+=======
+apiRouter.get('/',async(req,res)=>{
+    const userCollection = db.get().collection('user');
+    let users=await userCollection.find().toArray()
+    console.log(users);
+    res.json({
+        msg:"hello",
+        users
+    })
+>>>>>>> 96063ccba1e26adfe5a24069e12001e6c3218c70
 })
 
 apiRouter.post('/user/login',async(req,res)=>{
     const userData = req.body;
     const userCollection = db.get().collection('user');
-    
     const user = await userCollection.findOne({ 'email': userData.email },{'password':userData.password});
     console.log(user);
     if (user) {
